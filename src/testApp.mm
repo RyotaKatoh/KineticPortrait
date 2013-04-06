@@ -16,7 +16,7 @@ void testApp::setup()
 
     // camera initialization
 #ifndef DEBUG_IPHONE_SIMULATOR
-    camID    = CAMERA_BACK;
+    camID    = CAMERA_FRONT;
     cam.setDeviceID(camID);
 #endif
     cam.initGrabber(ofGetWidth(), ofGetHeight());
