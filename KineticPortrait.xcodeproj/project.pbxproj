@@ -63,7 +63,11 @@
 		BB16EBD90F2B2AB500518274 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB16EBD80F2B2AB500518274 /* QuartzCore.framework */; };
 		BB24DDCA10DA781C00E9C588 /* ofxiphone-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB24DDC910DA781C00E9C588 /* ofxiphone-Info.plist */; };
 		BBE5EAB80F49AD8400F28951 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBE5EAB70F49AD8400F28951 /* AudioToolbox.framework */; };
-		C1F574F017106C7C0076D65E /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C1F574EF17106C7B0076D65E /* Default-568h@2x.png */; };
+		C1F574F217119A100076D65E /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = C1F574F117119A100076D65E /* Icon.png */; };
+		C1F574F617119BF10076D65E /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C1F574F517119BF10076D65E /* Icon@2x.png */; };
+		C1F574F817119D660076D65E /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = C1F574F717119D660076D65E /* Default.png */; };
+		C1F574F917119D720076D65E /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C1F574EF17106C7B0076D65E /* Default-568h@2x.png */; };
+		C1F574FA17119E6A0076D65E /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C1F574F317119A590076D65E /* Default@2x.png */; };
 		E41D3ED713B38FB500A75A5D /* Project.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E41D3ED613B38FB500A75A5D /* Project.xcconfig */; };
 		E41D3EE613B3906D00A75A5D /* CoreOF.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E41D3EE513B3906D00A75A5D /* CoreOF.xcconfig */; };
 		E41D400B13B39D2100A75A5D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E41D400613B39D2100A75A5D /* AVFoundation.framework */; };
@@ -269,6 +273,10 @@
 		BB24DDC910DA781C00E9C588 /* ofxiphone-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ofxiphone-Info.plist"; sourceTree = "<group>"; };
 		BBE5EAB70F49AD8400F28951 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		C1F574EF17106C7B0076D65E /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		C1F574F117119A100076D65E /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		C1F574F317119A590076D65E /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		C1F574F517119BF10076D65E /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
+		C1F574F717119D660076D65E /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		E41D3ED613B38FB500A75A5D /* Project.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Project.xcconfig; sourceTree = "<group>"; };
 		E41D3EE513B3906D00A75A5D /* CoreOF.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = CoreOF.xcconfig; path = ../../../libs/openFrameworksCompiled/project/ios/CoreOF.xcconfig; sourceTree = SOURCE_ROOT; };
 		E41D400613B39D2100A75A5D /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -332,6 +340,10 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				C1F574F717119D660076D65E /* Default.png */,
+				C1F574F517119BF10076D65E /* Icon@2x.png */,
+				C1F574F317119A590076D65E /* Default@2x.png */,
+				C1F574F117119A100076D65E /* Icon.png */,
 				C1F574EF17106C7B0076D65E /* Default-568h@2x.png */,
 				E4D8936A11527B74007E1F53 /* src */,
 				BB24E1F710DAA51900E9C588 /* openFrameworks */,
@@ -969,7 +981,11 @@
 				B1046C601701A63200B8EA4B /* face.tri in Resources */,
 				B1046C611701A63200B8EA4B /* face2.tracker in Resources */,
 				B1046C701701A63200B8EA4B /* install.xml in Resources */,
-				C1F574F017106C7C0076D65E /* Default-568h@2x.png in Resources */,
+				C1F574F217119A100076D65E /* Icon.png in Resources */,
+				C1F574F617119BF10076D65E /* Icon@2x.png in Resources */,
+				C1F574F817119D660076D65E /* Default.png in Resources */,
+				C1F574F917119D720076D65E /* Default-568h@2x.png in Resources */,
+				C1F574FA17119E6A0076D65E /* Default@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1043,6 +1059,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iPhone_Prefix.pch;
 				HEADER_SEARCH_PATHS = (
@@ -1054,20 +1071,23 @@
 					"../../../addons/ofxOpenCv/src/**",
 				);
 				INFOPLIST_FILE = "ofxiphone-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../../addons/ofxOpenCv/libs/opencv/lib/ios\"",
 					"\"$(SRCROOT)/../../../addons/ofxOpenCv/libs/opencv/lib/osx\"",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = KineticPortrait;
 				SDKROOT = iphoneos;
-				VALID_ARCHS = "armv6 armv7";
+				VALID_ARCHS = armv7;
 			};
 			name = Debug;
 		};
 		1D6058950D05DD3E006BFB54 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iPhone_Prefix.pch;
 				HEADER_SEARCH_PATHS = (
@@ -1079,14 +1099,16 @@
 					"../../../addons/ofxOpenCv/src/**",
 				);
 				INFOPLIST_FILE = "ofxiphone-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../../addons/ofxOpenCv/libs/opencv/lib/ios\"",
 					"\"$(SRCROOT)/../../../addons/ofxOpenCv/libs/opencv/lib/osx\"",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = KineticPortrait;
 				SDKROOT = iphoneos;
-				VALID_ARCHS = "armv6 armv7";
+				VALID_ARCHS = armv7;
 			};
 			name = Release;
 		};

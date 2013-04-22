@@ -86,6 +86,7 @@ public:
     float           leftEyeOpennessTh;
     float           rightEyeOpennessTh;
     vector<ofVec3f> camObjPoints, camObjPointsDiff;
+    float           maxIconHeight;
 
 #ifdef TARGET_OF_IPHONE
     ofxiPhoneImagePicker imgPicker;

@@ -10,6 +10,17 @@
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFile</key>
 	<string></string>
+	<key>CFBundleIcons</key>
+	<dict>
+		<key>CFBundlePrimaryIcon</key>
+		<dict>
+			<key>CFBundleIconFiles</key>
+			<array>
+				<string>Icon.png</string>
+				<string>Icon@2x.png</string>
+			</array>
+		</dict>
+	</dict>
 	<key>CFBundleIdentifier</key>
 	<string>com.momochibi.${PRODUCT_NAME:identifier}</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -19,11 +30,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.01</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1.0</string>
+	<string>1.01</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIApplicationExitsOnSuspend</key>

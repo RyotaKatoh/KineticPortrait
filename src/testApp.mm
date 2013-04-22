@@ -59,6 +59,9 @@ void testApp::setup()
     cameraSwitchIcon.loadImage("image/icon03.png");
     pictureLibraryIcon.loadImage("image/icon01.png");
     showCameraImageIcon.loadImage("image/icon02.png");
+    float h = ofGetHeight();
+    maxIconHeight = max( max(h/6*5 + cameraSwitchIcon.height/2,  h/6*5 + pictureLibraryIcon.height/2), h/6*5 + showCameraImageIcon.height/2);
+    
 }
 
 //--------------------------------------------------------------
@@ -285,7 +288,8 @@ void testApp::exit()
 //--------------------------------------------------------------
 void testApp::touchDown(ofTouchEventArgs & touch)
 {
-    if(touch.y > ofGetHeight()/6 *5){
+    
+    if(touch.y > ofGetHeight()/6 *5 && touch.y < maxIconHeight){
         //switch camera
         if (touch.x < ofGetWidth()/3) {
 #ifndef DEBUG_IPHONE_SIMULATOR
@@ -319,12 +323,14 @@ void testApp::touchDown(ofTouchEventArgs & touch)
             numImage --;
             if(numImage <= 0)
                 numImage = NUM_IMAGE;
-            }
+            
+        }
     
         else if(touch.x > ofGetWidth() - 30){
             numImage ++;
             if(numImage > NUM_IMAGE)
                 numImage = 1;
+            
         }
     
         else{
