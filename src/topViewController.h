@@ -16,7 +16,7 @@
 - (IBAction)wipeSwitch:(id)sender;
 
 - (IBAction)switchCamera:(id)sender;
-- (IBAction)takePhoto:(id)sender;
+//- (IBAction)takePhoto:(id)sender;
 - (IBAction)openPhotoLibrary:(id)sender;
 
 - (IBAction)leftArrowButton:(id)sender;

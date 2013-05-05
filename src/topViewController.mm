@@ -45,11 +45,11 @@
     kineticPortrait->switchCamera();
 }
 
-- (IBAction)takePhoto:(id)sender {
-    //kineticPortrait->takePhoto();
-    kineticPortrait->setVideoGrabber();
-
-}
+//- (IBAction)takePhoto:(id)sender {
+//    //kineticPortrait->takePhoto();
+//    kineticPortrait->setVideoGrabber();
+//
+//}
 
 - (IBAction)openPhotoLibrary:(id)sender {
     UIActionSheet *sheet = [[UIActionSheet alloc]init];
