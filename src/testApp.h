@@ -62,6 +62,14 @@ public:
     void getMouthMeshFromSrcImageTracker(void);
     void changeSrcImageTracker(void);
     ofIndexType convertVertexIndexForMouthMesh(ofIndexType faceTrackerVertexIndex);
+    
+    /*** gui functions ***/
+    void setWipe(void);
+    void switchCamera(void);
+    void takePhoto(void);
+    void openPhotoLibrary(void);
+    void changeSamplePhoto(int leftOrRight);
+    void setVideoGrabber(void);
 
     /*** types ***/
     enum CamID_t {
@@ -91,6 +99,10 @@ public:
 #ifdef TARGET_OF_IPHONE
     ofxiPhoneImagePicker imgPicker;
 #endif
+    
+    bool addGUI;
+    bool takePhotoFunctionIsCalled;
+    CamID_t previousCamID;
 
 };
 
