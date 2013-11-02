@@ -21,10 +21,12 @@
 #define EYE_OPENNESS_OFFSET 0.3
 #define DEFAULT_IMAGE_PATH  "image/1.jpg"
 #define NUM_IMAGE           5
+#define FRAMERATE_PER_1UPDATE 4
 
 //--- namespace --------------------------------------------------------
 using namespace ofxCv;
 using namespace cv;
+
 
 //--- class ------------------------------------------------------------
 class testApp : public OF_APP_TYPE
@@ -71,6 +73,9 @@ public:
     void changeSamplePhoto(int leftOrRight);
     void setVideoGrabber(void);
 
+    /*** functions for camera ***/
+    void resetCamera(void);
+    
     /*** types ***/
     enum CamID_t {
         CAMERA_BACK,
@@ -78,13 +83,14 @@ public:
     };
 	
     /*** variables ***/
-    ofVideoGrabber  cam;
-    CamID_t         camID;
-    bool            wipeFlag;
+    //ofVideoGrabber  cam;
+    //CamID_t         camID;
+    //bool            wipeFlag;
+    ofImage cameraImage;
 	ofxFaceTrackerThreaded  camTracker;
     ofxFaceTracker  imgTracker;
     ofImage         srcImage;
-    ofImage         pictureLibraryIcon, showCameraImageIcon, cameraSwitchIcon;
+    //ofImage         pictureLibraryIcon, showCameraImageIcon, cameraSwitchIcon;
     int             numImage;
     ofMesh          imgMesh;
     ofMesh          mouthMesh;
@@ -97,12 +103,15 @@ public:
     float           maxIconHeight;
 
 #ifdef TARGET_OF_IPHONE
-    ofxiPhoneImagePicker imgPicker;
+    //ofxiPhoneImagePicker imgPicker;
+   
 #endif
     
     bool addGUI;
     bool takePhotoFunctionIsCalled;
     CamID_t previousCamID;
+    
+
 
 };
 

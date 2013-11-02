@@ -1,7 +1,10 @@
 #include "testApp.h"
-#include "topViewController.h"
+#include "avFoundationViewController.h"
 
-topViewController *xibViewController;
+//topViewController *xibViewController;
+avFoundationViewController *avViewController;
+
+
 
 //--------------------------------------------------------------
 void testApp::setup()
@@ -11,27 +14,18 @@ void testApp::setup()
 //	iPhoneSetOrientation(OFXIPHONE_ORIENTATION_LANDSCAPE_RIGHT);  // If you want a landscape oreintation
     
     //set xib GUI
-    xibViewController = [[topViewController alloc]initWithNibName:@"topViewController" bundle:nil];
+    //xibViewController = [[topViewController alloc]initWithNibName:@"topViewController" bundle:nil];
+    avViewController = [[avFoundationViewController alloc]initWithNibName:@"avFoundationViewController" bundle:nil];
+    
+    //cameraViewController = [[CameraViewController alloc]initWithNibName:@"CameraViewController" bundle:nil];
+    
     addGUI = false;
     
 	ofSetVerticalSync(true);
     ofEnableAlphaBlending();
 	ofSetDrawBitmapMode(OF_BITMAPMODE_MODEL_BILLBOARD);
     ofBackground(0, 0, 0);
-    //ofBackground(73, 168, 188);
-    
 
-    // camera initialization
-#ifndef DEBUG_IPHONE_SIMULATOR
-    camID    = CAMERA_FRONT;
-    previousCamID = camID;
-    cam.setDeviceID(camID);
-#endif
-    cam.initGrabber(ofGetWidth(), ofGetHeight());
-    
-    /*** modified 2013/04/26 ***/
-    //wipeFlag = false;
-    wipeFlag = true;
 	
     // setting of faceTracker for camera
 	camTracker.setup();
@@ -66,15 +60,7 @@ void testApp::setup()
     
     camObjPoints.clear();
     
-    
-    /*** modified 2013/05/03 ***/
-    
-    // load icon image;
-//    cameraSwitchIcon.loadImage("image/icon03.png");
-//    pictureLibraryIcon.loadImage("image/icon01.png");
-//    showCameraImageIcon.loadImage("image/icon02.png");
-//    float h = ofGetHeight();
-//    maxIconHeight = max( max(h/6*5 + cameraSwitchIcon.height/2,  h/6*5 + pictureLibraryIcon.height/2), h/6*5 + showCameraImageIcon.height/2);
+
     
     takePhotoFunctionIsCalled = false;
     
@@ -86,97 +72,145 @@ void testApp::update()
     if(!addGUI){
         CGSize addViewSize = CGSizeMake(ofGetWidth(), ofGetHeight());
         
-        CGRect addViewRect = [xibViewController.view frame];
+        CGRect addViewRect = [avViewController.view frame];
+        //CGRect addViewRect = [cameraViewController.view frame];
+        
         addViewRect.size.width = addViewSize.width;
         addViewRect.size.height = addViewSize.height;
-        [xibViewController.view setFrame:addViewRect];        
+        [avViewController.view setFrame:addViewRect];
         
-        [ofxiPhoneGetUIWindow() addSubview:xibViewController.view];
+        
+        [ofxiPhoneGetUIWindow() addSubview:avViewController.view];
+        
+        
         addGUI = true;
         
     }
-        
-#ifndef DEBUG_IPHONE_SIMULATOR
-    if (imgPicker.imageUpdated) {
-        imgPicker.imageUpdated = false;
-        srcImage.setFromPixels(imgPicker.pixels, imgPicker.width, imgPicker.height, OF_IMAGE_COLOR_ALPHA);
-//        srcImage.resize(ofGetWidth(), ofGetHeight());
+    
+    
+    // load source image
+    if(avViewController->isChangedSrcImage){
+    
+        ofxiPhoneUIImageToOFImage([[avViewController srcImageView]image], srcImage);
+        if(avViewController->isPushedArrowButton){
+            avViewController->isPushedArrowButton = NO;
+        }
+        else{
+            srcImage.rotate90(45);
+        }
         float resizeRate = max(srcImage.width / (float) ofGetWidth(), srcImage.height / (float)ofGetHeight());
         srcImage.resize(srcImage.width / resizeRate, srcImage.height / resizeRate);
-
-        imgPicker.close();
         
         changeSrcImageTracker();
         
-        if(takePhotoFunctionIsCalled){
-
-            cam.setDeviceID(camID);
-            cam.initGrabber(ofGetWidth(), ofGetHeight());
-        
-            takePhotoFunctionIsCalled = false;
-
-        }
-        
+        avViewController->isChangedSrcImage = NO;
     }
     
+
     
-    if(imgPicker.imagePicker->didcanceled){
-        imgPicker.imagePicker->didcanceled = false;
-        
-        cam.setDeviceID(camID);
-        cam.initGrabber(ofGetWidth(), ofGetHeight());
-        
-    }
+#ifndef DEBUG_IPHONE_SIMULATOR
+//    if (imgPicker.imageUpdated) {
+//        imgPicker.imageUpdated = false;
+//        srcImage.setFromPixels(imgPicker.pixels, imgPicker.width, imgPicker.height, OF_IMAGE_COLOR_ALPHA);
+////        srcImage.resize(ofGetWidth(), ofGetHeight());
+//        float resizeRate = max(srcImage.width / (float) ofGetWidth(), srcImage.height / (float)ofGetHeight());
+//        srcImage.resize(srcImage.width / resizeRate, srcImage.height / resizeRate);
+//
+//        imgPicker.close();
+//        
+//        changeSrcImageTracker();
+//        
+//        if(takePhotoFunctionIsCalled){
+//
+//            cam.setDeviceID(camID);
+//            cam.initGrabber(ofGetWidth(), ofGetHeight());
+//        
+//            takePhotoFunctionIsCalled = false;
+//
+//        }
+//        
+//    }
+//    
+//    
+//    if(imgPicker.imagePicker->didcanceled){
+//        imgPicker.imagePicker->didcanceled = false;
+//        imgPicker.close();
+//        
+//        cam.setDeviceID(camID);
+//        cam.initGrabber(ofGetWidth(), ofGetHeight());
+//        
+//    }
 #endif
 
-    cam.update();
+//    cam.update();
+//    
+//    if (cam.isFrameNew()) {
+//        camTracker.update(toCv(cam));
+//    }
+
     
-    if (cam.isFrameNew()) {
-        camTracker.update(toCv(cam));
-    }
     
-    if (camTracker.getFound()) {
-        // initialize vertex vectors and eye openness
-        if (camObjPoints.empty()) {
-            camObjPoints = camTracker.getObjectPoints();
-            camObjPointsDiff = camTracker.getObjectPoints();
-            leftEyeOpennessTh = camTracker.getGesture(ofxFaceTracker::LEFT_EYE_OPENNESS) - EYE_OPENNESS_OFFSET;
-            rightEyeOpennessTh = camTracker.getGesture(ofxFaceTracker::RIGHT_EYE_OPENNESS) - EYE_OPENNESS_OFFSET;
-        }
-        // copy vertex motion of camTracker to imgMesh
-        for (int i = 0; i < imgMesh.getNumVertices(); i++) {
-            // ignore face outline
-            if (i < 18) {
-                imgMesh.setVertex(i, imgTracker.getObjectPoint(i));
-            } else {
-#ifdef DEBUG_IPHONE_SIMULATOR
-                if (i >= 63 && i <= 65) {
-                    camObjPointsDiff[i] = (camTracker.getObjectPoint(i) + ofVec3f(0, 1.1) * ofGetElapsedTimef()/2 - camObjPoints[i]);
-                } else {
-                    camObjPointsDiff[i] = (camTracker.getObjectPoint(i) - camObjPoints[i]);
-                }
-#else
-                camObjPointsDiff[i] = (camTracker.getObjectPoint(i) - camObjPoints[i]);
-#endif
-                camObjPointsDiff[i] = camObjPointsDiff[i] + imgTracker.getObjectPoint(i);
-                imgMesh.setVertex(i, camObjPointsDiff[i]);
-                // set vertex for mouth mesh
-                mouthMesh.setVertex(convertVertexIndexForMouthMesh(i), camObjPointsDiff[i]);
+    static int t = 0;
+    t++;
+    if(t == FRAMERATE_PER_1UPDATE){
+        // load camera image
+            ofxiPhoneUIImageToOFImage([[avViewController hiddenView]image], cameraImage);
+            cameraImage.rotate90(45);
+            camTracker.update(toCv(cameraImage));
+        
+            t= 0;
+    
+    
+        if (camTracker.getFound()) {
+
+            // initialize vertex vectors and eye openness
+            if (camObjPoints.empty()) {
+                camObjPoints = camTracker.getObjectPoints();
+                camObjPointsDiff = camTracker.getObjectPoints();
+                leftEyeOpennessTh = camTracker.getGesture(ofxFaceTracker::LEFT_EYE_OPENNESS) - EYE_OPENNESS_OFFSET;
+                rightEyeOpennessTh = camTracker.getGesture(ofxFaceTracker::RIGHT_EYE_OPENNESS) - EYE_OPENNESS_OFFSET;
             }
+            // copy vertex motion of camTracker to imgMesh
+            for (int i = 0; i < imgMesh.getNumVertices(); i++) {
+                // ignore face outline
+                if (i < 18) {
+                    imgMesh.setVertex(i, imgTracker.getObjectPoint(i));
+                } else {
+#ifdef DEBUG_IPHONE_SIMULATOR
+                    if (i >= 63 && i <= 65) {
+                        camObjPointsDiff[i] = (camTracker.getObjectPoint(i) + ofVec3f(0, 1.1) * ofGetElapsedTimef()/2 - camObjPoints[i]);
+                    } else {
+                        camObjPointsDiff[i] = (camTracker.getObjectPoint(i) - camObjPoints[i]);
+                    }
+#else
+                    camObjPointsDiff[i] = (camTracker.getObjectPoint(i) - camObjPoints[i]);
+#endif
+                    camObjPointsDiff[i] = camObjPointsDiff[i] + imgTracker.getObjectPoint(i);
+                    imgMesh.setVertex(i, camObjPointsDiff[i]);
+                    // set vertex for mouth mesh
+                    mouthMesh.setVertex(convertVertexIndexForMouthMesh(i), camObjPointsDiff[i]);
+                }
+            }
+            // check eye openness
+            if (camTracker.getGesture(ofxFaceTracker::LEFT_EYE_OPENNESS) < leftEyeOpennessTh) {
+                imgMesh.setVertex(37, camObjPoints[41]);
+                imgMesh.setVertex(38, camObjPoints[40]);
+            }
+            if (camTracker.getGesture(ofxFaceTracker::RIGHT_EYE_OPENNESS) < rightEyeOpennessTh) {
+                imgMesh.setVertex(43, camObjPoints[47]);
+                imgMesh.setVertex(44, camObjPoints[46]);
+            }
+            
+            [avViewController detectedImage].hidden = NO;
         }
-        // check eye openness
-        if (camTracker.getGesture(ofxFaceTracker::LEFT_EYE_OPENNESS) < leftEyeOpennessTh) {
-            imgMesh.setVertex(37, camObjPoints[41]);
-            imgMesh.setVertex(38, camObjPoints[40]);
-        }
-        if (camTracker.getGesture(ofxFaceTracker::RIGHT_EYE_OPENNESS) < rightEyeOpennessTh) {
-            imgMesh.setVertex(43, camObjPoints[47]);
-            imgMesh.setVertex(44, camObjPoints[46]);
-        }
-    } else {
-        camObjPoints.clear();
-        for (int i = 0; i < imgMesh.getNumVertices(); i++) {
-            imgMesh.setVertex(i, imgTracker.getObjectPoint(i));
+        else {
+            camObjPoints.clear();
+            for (int i = 0; i < imgMesh.getNumVertices(); i++) {
+                imgMesh.setVertex(i, imgTracker.getObjectPoint(i));
+            }
+            
+            [avViewController detectedImage].hidden = YES;
+            
         }
     }
 }
@@ -184,17 +218,21 @@ void testApp::update()
 //--------------------------------------------------------------
 void testApp::draw()
 {
+    
+
     if (imgTracker.getFound()) {
+    
         // draw source image
-//        srcImage.draw(ofGetWidth()/2 - srcImage.width/2, ofGetHeight()/2 - srcImage.height/2, srcImage.width, srcImage.height);
         srcImage.draw((ofGetWidth()/2 - srcImage.width/2), (ofGetHeight()/2 - srcImage.height/2));
+    
     } else {
+       
         ofDrawBitmapString("face was not fouond.", 25, ofGetHeight()/2);
-        ofDrawBitmapString("Please change the photo.", 25, ofGetHeight()/2 + 10);
+        ofDrawBitmapString("Please change the source image.", 25, ofGetHeight()/2 + 10);
     }
     
     // draw frame rate
-	ofSetColor(255);
+//	ofSetColor(255);
 //	ofDrawBitmapString(ofToString((int) ofGetFrameRate()), 10, 20);
     
     // disable display 3D pharse
@@ -214,29 +252,13 @@ void testApp::draw()
     imgMesh.draw();
     srcImage.unbind();
     ofPopMatrix();
+    
+    
     glDisable(GL_DEPTH_TEST);
 
-    if (wipeFlag) {
-        cam.draw(ofGetWidth()*3/4, 0, ofGetWidth()/4, ofGetHeight()/4);
-    }
     
-    if (!imgTracker.getFound()) {
-        drawHighlightString("image face not fount", 10, ofGetHeight()/2);
-    }
     
-    // modified 2013/04/25
-    // draw icon image
-//    cameraSwitchIcon.draw(ofGetWidth()/5 - cameraSwitchIcon.width/2, ofGetHeight()/6*5 - cameraSwitchIcon.height/2);
-//    pictureLibraryIcon.draw(ofGetWidth()/2 - pictureLibraryIcon.width/2, ofGetHeight()/6*5 - pictureLibraryIcon.height/2);
-//    showCameraImageIcon.draw(ofGetWidth()/5*4 - showCameraImageIcon.width/2, ofGetHeight()/6*5 - showCameraImageIcon.height/2);
-//    
-//    
     
-    //modified 2013/04/26
-    // draw triangles
-//    ofSetColor(255, 255, 255);
-//    ofTriangle(5, ofGetHeight()/2, 20, ofGetHeight()/2 - 20, 20, ofGetHeight()/2 + 20);
-//    ofTriangle(ofGetWidth()-5, ofGetHeight()/2, ofGetWidth()-20, ofGetHeight()/2 - 20, ofGetWidth() - 20, ofGetHeight()/2 + 20);
 }
 
 /**
@@ -329,6 +351,8 @@ ofIndexType testApp::convertVertexIndexForMouthMesh(ofIndexType faceTrackerVerte
     return index;
 }
 
+
+
 //--------------------------------------------------------------
 void testApp::exit()
 {
@@ -338,108 +362,12 @@ void testApp::exit()
 //--------------------------------------------------------------
 void testApp::touchDown(ofTouchEventArgs & touch)
 {
-    
-    // modified 2013/04/25
-//    if(touch.y > ofGetHeight()/6 *5 && touch.y < maxIconHeight){
-//        //switch camera
-//        if (touch.x < ofGetWidth()/3) {
-//#ifndef DEBUG_IPHONE_SIMULATOR
-//            cam.close();
-//            if (camID == CAMERA_BACK) {
-//                camID = CAMERA_FRONT;
-//            }
-//            else {
-//                camID = CAMERA_BACK;
-//            }
-//            cam.setDeviceID(camID);
-//            cam.initGrabber(ofGetWidth(), ofGetHeight());
-//#endif
-//        }
-//#ifdef TARGET_OF_IPHONE
-//        //open photo library
-//        else if (touch.x > ofGetWidth()/3 && touch.x < ofGetWidth()/3 *2) {
-//            imgPicker.openLibrary();
-//            
-//        }
-//#endif
-//        //display camera image
-//        else if (touch.x > ofGetWidth()/3*2 && touch.x < ofGetWidth()) {
-//            wipeFlag = (wipeFlag) ? false: true;
-//        }
-//    } //if(touch.y > ofGetHeight()/6 *5)
 
-    
-    //modified 2013/04/26
-//    if(touch.y > ofGetHeight()/2 - 20 && touch.y < ofGetHeight()/2 + 20){
-//        if(touch.x < 30){
-//            numImage --;
-//            if(numImage <= 0)
-//                numImage = NUM_IMAGE;
-//            
-//        }
-//    
-//        else if(touch.x > ofGetWidth() - 30){
-//            numImage ++;
-//            if(numImage > NUM_IMAGE)
-//                numImage = 1;
-//            
-//        }
-//    
-//        else{
-//            return;
-//        }
-//    
-//        srcImage.clear();
-//    
-//        char imagePath[256];
-//        sprintf(imagePath, "image/%d.jpg",numImage);
-//        srcImage.loadImage(imagePath);
-//    
-//        srcImage.setImageType(OF_IMAGE_COLOR_ALPHA);
-//    
-//        float resizeRate = max(srcImage.width / (float) ofGetWidth(), srcImage.height / (float)ofGetHeight());
-//        srcImage.resize(srcImage.width / resizeRate, srcImage.height / resizeRate);
-//        changeSrcImageTracker();
-//    
-//    }
 
 }
 
-void testApp::setWipe(){
-    wipeFlag = (wipeFlag) ? false: true;
-}
 
-void testApp::switchCamera(){
-#ifndef DEBUG_IPHONE_SIMULATOR
-    cam.close();
-    if (camID == CAMERA_BACK) {
-        camID = CAMERA_FRONT;
-    }
-    else {
-        camID = CAMERA_BACK;
-    }
-    cam.setDeviceID(camID);
-    cam.initGrabber(ofGetWidth(), ofGetHeight());
-#endif
-}
 
-void testApp::takePhoto(){
-#ifndef DEBUG_IPHONE_SIMULATOR
-    if(camID == CAMERA_FRONT){
-        cam.close();
-        cam.setDeviceID(CAMERA_BACK);
-        cam.initGrabber(ofGetWidth(), ofGetHeight());
-    }
-    
-    imgPicker.openCamera();
-    
-    takePhotoFunctionIsCalled = true;
-#endif
-}
-
-void testApp::openPhotoLibrary(){
-    imgPicker.openLibrary();
-}
 
 void testApp::changeSamplePhoto(int leftOrRight){
     if(leftOrRight == 0){ //mean left
@@ -472,12 +400,6 @@ void testApp::changeSamplePhoto(int leftOrRight){
     changeSrcImageTracker();
 }
 
-void testApp::setVideoGrabber(){
-#ifndef DEBUG_IPHONE_SIMULATOR
-    cam.setDeviceID(camID);
-    cam.initGrabber(ofGetWidth(), ofGetHeight());
-#endif
-}
 
 //--------------------------------------------------------------
 void testApp::touchMoved(ofTouchEventArgs & touch)
@@ -525,4 +447,7 @@ void testApp::deviceOrientationChanged(int newOrientation)
 {
 
 }
+
+//
+
 
