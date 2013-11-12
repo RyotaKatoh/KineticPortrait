@@ -19,7 +19,7 @@
 
 //--- macro definitions ------------------------------------------------
 #define EYE_OPENNESS_OFFSET 0.3
-#define DEFAULT_IMAGE_PATH  "image/1.jpg"
+#define DEFAULT_IMAGE_PATH  "1.jpg"
 #define NUM_IMAGE           5
 #define FRAMERATE_PER_1UPDATE 4
 
